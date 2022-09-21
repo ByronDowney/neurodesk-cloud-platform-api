@@ -47,82 +47,80 @@ def generate_settings(neurodesk_settings):
     Takes generic Neurodesk settings and converts them to a valid QMENTA settings file.
     """
     name = neurodesk_settings["name"]
-    os.mkdir(name)
-    with open("settings.json", "w") as settings:
-        qmenta_settings = []
-        qmenta_settings.append({"type": "heading", "content": (neurodesk_settings["name"] + "<br/> Inputs <br/>")})
-        qmenta_settings.append({"type": "info", "content": neurodesk_settings["description"]})
-        for key, value in neurodesk_settings["config"]:
-            neurodesk_type = value["type"]
-            if neurodesk_type == "number":
-                neurodesk_type = "decimal"
 
-            input_id = key.replace(" ", "-").replace("_", "-")
-            qmenta_settings[0]["content"] = qmenta_settings[0]["content"] + key + ": " + value["description"] + "<br/>"
+    qmenta_settings = []
+    qmenta_settings.append({"type": "heading", "content": neurodesk_settings["name"]})
+    qmenta_settings.append({"type": "info", "content": (neurodesk_settings["description"] + "<br/> <h3> Inputs: </h3> <br/>")})
+    for key, value in neurodesk_settings["config"].items():
+        neurodesk_type = value["type"]
+        if neurodesk_type == "number":
+            neurodesk_type = "decimal"
 
-            qmenta_settings.append({"type": neurodesk_type,
-                                    "title": key,
-                                    "id": input_id,
-                                    "mandatory": int(not value["optional"]),
-                                    "default": key["default"],
-                                    "min": key["min"],
-                                    "max": key["max"]
-                                    })
-        for key, value in neurodesk_settings["inputs"]:
-            input_id = key.replace(" ", "-").replace("_", "-")
+        input_id = key.replace(" ", "_").replace("-", "_")
+        qmenta_settings[1]["content"] = qmenta_settings[1]["content"] + key + ": " + value["description"] + "<br/>"
 
-            qmenta_settings.append({"type": "container",
-                                    "title": key,
-                                    "id": input_id,
-                                    "mandatory": int(not value["optional"]),
-                                    "file_filter": ("c_" + key + "[1,*]<'',[],'\\.*'"),
-                                    "in_filter": ["mri_brain_data"],
-                                    "out_filter": [],
-                                    "batch": 1,
-                                    "anchor": 1
-                                    })
+        qmenta_settings.append({"type": neurodesk_type,
+                                "title": key,
+                                "id": input_id,
+                                "mandatory": int(not value["optional"]),
+                                "default": value["default"], #TODO need to fix crash when a value isn't found
+                                "min": value["min"],
+                                "max": value["max"]
+                                })
+    for key, value in neurodesk_settings["inputs"].items():
+        input_id = key.replace(" ", "_").replace("-", "_")
+        qmenta_settings[1]["content"] = qmenta_settings[1]["content"] + key + ": " + value["description"] + "<br/>"
 
-        # other QMENTA specific settings parsing here
-        settings.dump(qmenta_settings)
+        qmenta_settings.append({"type": "container",
+                                "title": key,
+                                "id": input_id,
+                                "mandatory": int(not value["optional"]),
+                                "file_filter": ("c_" + key + "[1,*]<'',[],'\\.*'>"),
+                                "in_filter": ["mri_brain_data"],
+                                "out_filter": [],
+                                "batch": 1,
+                                "anchor": 1
+                                })
 
+    with open(name + "_settings.json", "w") as settings:
+        json.dump(qmenta_settings, settings, indent=4)
+        print("QMENTA settings created for ", name)
 
 def generate_manifest(neurodesk_settings):
     """
     Takes generic Neurodesk settings and converts them to a valid Flywheel manifest file.
     """
     name = neurodesk_settings["name"]
-    os.mkdir(name)
-    with open("manifest.json", "w") as settings:
-        flywheel_settings = {}
-        flywheel_settings["name"] = neurodesk_settings["name"].replace(" ", "-").replace("_", "-")
-        flywheel_settings["label"] = neurodesk_settings["name"]
-        flywheel_settings["description"] = neurodesk_settings["description"]
-        flywheel_settings["author"] = neurodesk_settings["author"]
-        flywheel_settings["url"] = neurodesk_settings["url"]
-        flywheel_settings["source"] = neurodesk_settings["source code"]
-        flywheel_settings["license"] = neurodesk_settings["license"]
-        flywheel_settings["version"] = neurodesk_settings["version"]
-        flywheel_settings["environment"] = flywheel_settings["environment variables"]
-        custom = {"gear-builder": {
-            "category": neurodesk_settings["application type"] if neurodesk_settings["application type"] else "analysis",
-            "image": neurodesk_settings["image name"]}}
-        flywheel_settings["custom"] = custom
-        flywheel_settings["config"] = neurodesk_settings["config"]
-        inputs = {}
-        for key, value in neurodesk_settings["inputs"]:
-            inputs[key] = {
-                "base": "file",
-                #Todo may not implement this, speak to Steffen "type": {"enum": []},
-                "description": key["description"]
-            }
 
-        flywheel_settings["inputs"] = inputs
+    flywheel_settings = {}
+    flywheel_settings["name"] = neurodesk_settings["name"].replace(" ", "-").replace("_", "-")
+    flywheel_settings["label"] = neurodesk_settings["name"]
+    flywheel_settings["description"] = neurodesk_settings["description"]
+    flywheel_settings["author"] = neurodesk_settings["author"]
+    flywheel_settings["url"] = neurodesk_settings["url"]
+    flywheel_settings["source"] = neurodesk_settings["source code"]
+    flywheel_settings["license"] = neurodesk_settings["license"]
+    flywheel_settings["version"] = neurodesk_settings["version"]
+    flywheel_settings["environment"] = flywheel_settings["environment variables"]
+    custom = {"gear-builder": {
+        "category": neurodesk_settings["application type"] if neurodesk_settings["application type"] else "analysis",
+        "image": neurodesk_settings["image name"]}}
+    flywheel_settings["custom"] = custom
+    flywheel_settings["config"] = neurodesk_settings["config"]
+    inputs = {}
+    for key, value in neurodesk_settings["inputs"]:
+        inputs[key] = {
+            "base": "file",
+            #Todo may not implement this, speak to Steffen "type": {"enum": []},
+            "description": key["description"]
+        }
 
+    flywheel_settings["inputs"] = inputs
 
 
-
-        # other Flywheel specific settings parsing here
-        settings.dump(flywheel_settings)
+    with open(name + "_manifest.json", "w") as manifest:
+        json.dump(flywheel_settings, manifest, indent=4)
+        print("Flywheel manifest created for ", name)
 
 
 def main():
@@ -130,12 +128,14 @@ def main():
 
     if args.cloud_platform.lower() == "qmenta":
         if args.generate_settings:
-            neurodesk_settings = json.load(args.generate_settings)
+            file = open(args.generate_settings)
+            neurodesk_settings = json.load(file)
             generate_settings(neurodesk_settings)
 
     elif args.cloud_platform.lower() == "flywheel":
         if args.generate_settings:
-            neurodesk_settings = json.load(args.generate_settings)
+            file = open(args.generate_settings)
+            neurodesk_settings = json.load(file)
             generate_manifest(neurodesk_settings)
     else:
         print('Cloud platform string not recognised. Please use either "QMENTA" or "Flywheel" (upper or lower case does not matter)')
