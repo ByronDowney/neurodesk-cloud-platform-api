@@ -101,18 +101,18 @@ def generate_manifest(neurodesk_settings):
     flywheel_settings["source"] = neurodesk_settings["source code"]
     flywheel_settings["license"] = neurodesk_settings["license"]
     flywheel_settings["version"] = neurodesk_settings["version"]
-    flywheel_settings["environment"] = flywheel_settings["environment variables"]
+    flywheel_settings["environment"] = neurodesk_settings["environment variables"]
     custom = {"gear-builder": {
         "category": neurodesk_settings["application type"] if neurodesk_settings["application type"] else "analysis",
         "image": neurodesk_settings["image name"]}}
     flywheel_settings["custom"] = custom
     flywheel_settings["config"] = neurodesk_settings["config"]
     inputs = {}
-    for key, value in neurodesk_settings["inputs"]:
+    for key, value in neurodesk_settings["inputs"].items():
         inputs[key] = {
             "base": "file",
             #Todo may not implement this, speak to Steffen "type": {"enum": []},
-            "description": key["description"]
+            "description": value["description"]
         }
 
     flywheel_settings["inputs"] = inputs
@@ -126,7 +126,7 @@ def generate_manifest(neurodesk_settings):
 def main():
     args = parse_arguments()
 
-    if args.cloud_platform.lower() == "qmenta":
+    if args.cloud_platform.lower() == "qmenta": #TODO allow for user to specify a list of platforms in the json file?
         if args.generate_settings:
             file = open(args.generate_settings)
             neurodesk_settings = json.load(file)
