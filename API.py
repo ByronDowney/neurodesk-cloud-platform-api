@@ -41,50 +41,60 @@ def parse_arguments():
     parser.add_argument('--generate-settings', help="Path to a generic Neurodesk Application settings file. It will automatically be converted to a format that works with your specified cloud platform")
     return parser.parse_args()
 
-
 def generate_settings(neurodesk_settings):
     """
     Takes generic Neurodesk settings and converts them to a valid QMENTA settings file.
     """
     name = neurodesk_settings["name"]
+    try:
+        qmenta_settings = []
+        qmenta_settings.append({"type": "heading", "content": neurodesk_settings["name"]})
+        qmenta_settings.append({"type": "info", "content": (neurodesk_settings["description"] + "<br/> <h3> Inputs: </h3> <br/>")})
 
-    qmenta_settings = []
-    qmenta_settings.append({"type": "heading", "content": neurodesk_settings["name"]})
-    qmenta_settings.append({"type": "info", "content": (neurodesk_settings["description"] + "<br/> <h3> Inputs: </h3> <br/>")})
-    for key, value in neurodesk_settings["config"].items():
-        neurodesk_type = value["type"]
-        if neurodesk_type == "number":
-            neurodesk_type = "decimal"
+        for key, value in neurodesk_settings["config"].items():
+            neurodesk_type = value["type"]
+            if neurodesk_type == "number":
+                neurodesk_type = "decimal"
 
-        input_id = key.replace(" ", "_").replace("-", "_")
-        qmenta_settings[1]["content"] = qmenta_settings[1]["content"] + key + ": " + value["description"] + "<br/>"
+            input_id = key.replace(" ", "_").replace("-", "_")
+            qmenta_settings[1]["content"] = qmenta_settings[1]["content"] + key + ": " + value["description"] + "<br/>"
 
-        qmenta_settings.append({"type": neurodesk_type,
-                                "title": key,
-                                "id": input_id,
-                                "mandatory": int(not value["optional"]),
-                                "default": value["default"], #TODO need to fix crash when a value isn't found
-                                "min": value["min"],
-                                "max": value["max"]
-                                })
-    for key, value in neurodesk_settings["inputs"].items():
-        input_id = key.replace(" ", "_").replace("-", "_")
-        qmenta_settings[1]["content"] = qmenta_settings[1]["content"] + key + ": " + value["description"] + "<br/>"
+            qmenta_settings.append({
+                # uses dictionary unpacking ("**" syntax) to conditionally
+                # add optional values if they exist in the general neurodesk settings file
+                "type": neurodesk_type,
+                "title": key,
+                "id": input_id,
+                **({"mandatory": int(not value["optional"])} if "mandatory" in value else {}),
+                **({"default": value["default"]} if "default" in value else {}),
+                **({"min": value["min"]} if "min" in value else {}),
+                **({"max": value["max"]} if "max" in value else {})
+                })
+        for key, value in neurodesk_settings["inputs"].items():
+            input_id = key.replace(" ", "_").replace("-", "_")
+            qmenta_settings[1]["content"] = qmenta_settings[1]["content"] + key + ": " + value["description"] + "<br/>"
 
-        qmenta_settings.append({"type": "container",
-                                "title": key,
-                                "id": input_id,
-                                "mandatory": int(not value["optional"]),
-                                "file_filter": ("c_" + key + "[1,*]<'',[],'\\.*'>"),
-                                "in_filter": ["mri_brain_data"],
-                                "out_filter": [],
-                                "batch": 1,
-                                "anchor": 1
-                                })
+            qmenta_settings.append({
+                # uses dictionary unpacking ("**" syntax) to conditionally
+                # add optional values if they exist in the general neurodesk settings file and to define default values
+                "type": "container",
+                "title": key,
+                "id": input_id,
+                "mandatory": int(not value["optional"]),
+                "file_filter": ("c_" + key + "[1,*]<'',[],'\\.*'>"),
+                "in_filter": ["mri_brain_data"],
+                "out_filter": [],
+                **({"batch": int(value["batch"])} if "batch" in value else {"batch": 1}),
+                **({"anchor": int(value["anchor"])} if "anchor" in value else {"anchor": 1})
+                })
 
-    with open(name + "_settings.json", "w") as settings:
-        json.dump(qmenta_settings, settings, indent=4)
-        print("QMENTA settings created for ", name)
+        with open(name + "_settings.json", "w") as settings:
+            json.dump(qmenta_settings, settings, indent=4)
+            print("A QMENTA settings file has been created for", name, "at", os.path.join(os.getcwd(), name + "_settings.json"))
+    except KeyError as e:
+        print("Error: to generate a QMENTA settings file you must include "
+              "the following fields in your neurodesk settings file:\n ", e.args[0])
+
 
 def generate_manifest(neurodesk_settings):
     """
@@ -120,26 +130,37 @@ def generate_manifest(neurodesk_settings):
 
     with open(name + "_manifest.json", "w") as manifest:
         json.dump(flywheel_settings, manifest, indent=4)
-        print("Flywheel manifest created for ", name)
+        print("A Flywheel manifest file has been created for", name, "at", os.path.join(os.getcwd(), name + "_manifest.json"))
 
 
 def main():
     args = parse_arguments()
+    if args.cloud_platform:
+        if args.cloud_platform.lower() == "qmenta":
+            if args.generate_settings:
+                file = open(args.generate_settings)
+                neurodesk_settings = json.load(file)
+                generate_settings(neurodesk_settings)
 
-    if args.cloud_platform.lower() == "qmenta": #TODO allow for user to specify a list of platforms in the json file?
-        if args.generate_settings:
-            file = open(args.generate_settings)
-            neurodesk_settings = json.load(file)
-            generate_settings(neurodesk_settings)
-
-    elif args.cloud_platform.lower() == "flywheel":
-        if args.generate_settings:
-            file = open(args.generate_settings)
-            neurodesk_settings = json.load(file)
-            generate_manifest(neurodesk_settings)
+        elif args.cloud_platform.lower() == "flywheel":
+            if args.generate_settings:
+                file = open(args.generate_settings)
+                neurodesk_settings = json.load(file)
+                generate_manifest(neurodesk_settings)
+        else:
+            print('Cloud platform string not recognised. Please use either "QMENTA" or "Flywheel" (upper or lower case does not matter)')
     else:
-        print('Cloud platform string not recognised. Please use either "QMENTA" or "Flywheel" (upper or lower case does not matter)')
-
+        # allows the user to include a list of platforms to create settings files for
+        # instead of specifying on the command line
+        if args.generate_settings:
+            file = open(args.generate_settings)
+            neurodesk_settings = json.load(file)
+            platforms = neurodesk_settings["platforms"]
+            for platform in platforms:
+                if platform.lower() == "qmenta":
+                    generate_settings(neurodesk_settings)
+                elif platform.lower() == "flywheel":
+                    generate_manifest(neurodesk_settings)
 
 if __name__ == "__main__":
     main()
