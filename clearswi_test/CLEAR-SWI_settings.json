@@ -1,0 +1,43 @@
+[
+    {
+        "type": "heading",
+        "content": "ClEAR-SWI"
+    },
+    {
+        "type": "info",
+        "content": "Published as CLEAR-SWI. It provides magnetic resonance images with improved vein and iron contrast by weighting a combined magnitude image with a preprocessed phase image. This package has the additional capability of multi-echo SWI, intensity correction, contrast enhancement and improved phase processing. The reason for the development of this package was to solve artefacts at ultra-high field strength (7T), however, it also drastically improves the SWI quality at lower field strength.<br/> <h3> Inputs: </h3> <br/>Echo Time: change this to the Echo Time of your sequence. For multi-echoes, set a list of TE values, else set a list with a single TE value.<br/>magnitude: Magnitude images<br/>phase: Phase images<br/>"
+    },
+    {
+        "type": "string",
+        "title": "echo time",
+        "id": "echo_time",
+        "mandatory": 1,
+        "default": "[4,8,12]"
+    },
+    {
+        "type": "container",
+        "title": "magnitude",
+        "id": "mag",
+        "mandatory": 1,
+        "file_filter": "c_magnitude[1,*]<'',[],'\\.*'>",
+        "in_filter": [
+            "mri_brain_data"
+        ],
+        "out_filter": [],
+        "batch": 1,
+        "anchor": 1
+    },
+    {
+        "type": "container",
+        "title": "phase",
+        "id": "phs",
+        "mandatory": 1,
+        "file_filter": "c_phase[1,*]<'',[],'\\.*'>",
+        "in_filter": [
+            "mri_brain_data"
+        ],
+        "out_filter": [],
+        "batch": 1,
+        "anchor": 1
+    }
+]

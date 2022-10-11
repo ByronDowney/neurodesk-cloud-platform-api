@@ -1,0 +1,45 @@
+[
+    {
+        "type": "heading",
+        "content": "QSMxT"
+    },
+    {
+        "type": "info",
+        "content": "QSMxT is a complete and end-to-end QSM processing and analysis framework that excels at automatically reconstructing and processing QSM for large groups of participants<br/> <h3> Inputs: </h3> <br/>qsm_iterations: TGV QSM Iterations<br/>magnitude: Magnitude images<br/>phase: Phase images<br/>"
+    },
+    {
+        "type": "integer",
+        "title": "qsm_iterations",
+        "id": "qsm_iterations",
+        "mandatory": 1,
+        "default": "1000",
+        "min": "1",
+        "max": "2000"
+    },
+    {
+        "type": "container",
+        "title": "magnitude",
+        "id": "mag",
+        "mandatory": 1,
+        "file_filter": "c_magnitude[1,*]<'',[],'\\.*'>",
+        "in_filter": [
+            "mri_brain_data"
+        ],
+        "out_filter": [],
+        "batch": 1,
+        "anchor": 1
+    },
+    {
+        "type": "container",
+        "title": "phase",
+        "id": "phs",
+        "mandatory": 1,
+        "file_filter": "c_phase[1,*]<'',[],'\\.*'>",
+        "in_filter": [
+            "mri_brain_data"
+        ],
+        "out_filter": [],
+        "batch": 1,
+        "anchor": 1
+    }
+]

@@ -1,0 +1,40 @@
+{
+    "name": "QSMxT",
+    "label": "QSMxT",
+    "description": "QSMxT is a complete and end-to-end QSM processing and analysis framework that excels at automatically reconstructing and processing QSM for large groups of participants",
+    "author": "Ashley Stewart",
+    "url": "https://www.neurodesk.org/",
+    "source": "https://github.com/QSMxT/QSMxT",
+    "license": "GPL-3.0-only",
+    "version": "1.1.7",
+    "environment": {
+        "PATH": "/opt/miniconda-latest/bin:/opt/dcm2niix-latest/bin:/opt/ants-2.3.4:/opt/fsl-6.0.4/bin:/miniconda2/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/julia-1.5.3/bin:/opt/bru2:/opt/FastSurfer"
+    },
+    "custom": {
+        "gear-builder": {
+            "category": "analysis",
+            "image": "byrondowney/public:qsmxt_test1"
+        }
+    },
+    "config": {
+        "qsm_iterations": {
+            "description": "TGV QSM Iterations",
+            "optional": false,
+            "type": "integer",
+            "min": 1,
+            "max": 2000,
+            "default": 1000
+        }
+    },
+    "inputs": {
+        "magnitude": {
+            "base": "file",
+            "description": "Magnitude images"
+        },
+        "phase": {
+            "base": "file",
+            "description": "Phase images"
+        }
+    },
+    "command": "python run.py"
+}

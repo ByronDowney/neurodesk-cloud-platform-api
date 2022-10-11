@@ -65,3 +65,9 @@ Specifies the types of inputs acceptable for the application. Currently, only fi
 data type: #TODO TALK WITH STEFFEN - SHOULD I BE DOING THIS The type of data contained in the input. Currently, the options are: "nifti", "dicom"
 
 modality: Currently, modality (e.g. T1, T2) is not enforced. This could be a feature to expand on in the future.
+
+# 
+",
+    "command": "python run.py" at the end of the manifest file
+
+QMENTA the default, min, max can't be strings

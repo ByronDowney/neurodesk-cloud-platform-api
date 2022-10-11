@@ -1,0 +1,12 @@
+{
+    "magnitude": [
+        {
+            "path": "mag_data.zip"
+        }],
+    "phase": [
+        {
+            "path": "phase_data.zip"
+        }
+    ],
+    "qsm_iterations": 1
+}

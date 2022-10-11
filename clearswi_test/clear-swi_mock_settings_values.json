@@ -1,0 +1,12 @@
+{
+    "mag": [
+        {
+            "path": "mag.zip"
+        }],
+    "phs": [
+        {
+            "path": "phs.zip"
+        }
+    ],
+    "echo_time": "[4,8,12]"
+}
