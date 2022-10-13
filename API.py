@@ -126,12 +126,13 @@ def generate_manifest(neurodesk_settings):
         }
 
     flywheel_settings["inputs"] = inputs
+    flywheel_settings["command"] = neurodesk_settings["flywheel command"]
+    #TODO implement optional parameters here as well (only done in QMENTA right now)
 
 
     with open(name + "_manifest.json", "w") as manifest:
         json.dump(flywheel_settings, manifest, indent=4)
         print("A Flywheel manifest file has been created for", name, "at", os.path.join(os.getcwd(), name + "_manifest.json"))
-
 
 def main():
     args = parse_arguments()

@@ -31,6 +31,6 @@
       "optional": false,
       "description": "Phase images"
     }
-  }
-
+  },
+  "flywheel command": "python run.py"
 }
