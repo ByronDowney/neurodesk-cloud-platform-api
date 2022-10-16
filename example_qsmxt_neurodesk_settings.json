@@ -6,7 +6,7 @@
   "source code": "https://github.com/QSMxT/QSMxT",
   "license": "GPL-3.0-only",
   "version": "1.1.7",
-  "image name": "vnmd/qsmxt_1.1.7:latest",
+  "image": "byrondowney/public:qsmxt_test1",
   "application type": "analysis",
   "environment variables": {
     "PATH": "/opt/miniconda-latest/bin:/opt/dcm2niix-latest/bin:/opt/ants-2.3.4:/opt/fsl-6.0.4/bin:/miniconda2/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/julia-1.5.3/bin:/opt/bru2:/opt/FastSurfer"
@@ -23,12 +23,12 @@
   },
   "inputs": {
     "magnitude": {
-      "data type": "dicom",
+      "file type": ["dicom"],
       "optional": false,
       "description": "Magnitude images"
     },
     "phase": {
-      "data type": "dicom",
+      "file type": ["dicom"],
       "optional": false,
       "description": "Phase images"
     }

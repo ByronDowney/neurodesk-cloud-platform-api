@@ -109,7 +109,8 @@ def generate_manifest(neurodesk_settings):
             }
 
         flywheel_settings["inputs"] = inputs
-        flywheel_settings["command"] = neurodesk_settings["flywheel command"]
+        if "flywheel command" in neurodesk_settings:
+            flywheel_settings["command"] = neurodesk_settings["flywheel command"]
     except KeyError as e:
         print("Error: to generate a Flywheel manifest file you must include "
               "the following field in your neurodesk settings file:\n ", e.args[0])

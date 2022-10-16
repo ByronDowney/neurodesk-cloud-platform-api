@@ -16,14 +16,18 @@ An example has been provided called run.py for both the QSMxT and CLEAR-SWI neur
 
 # Testing the API and Neurodesk Application
 Even without logging onto any cloud platform, the function of an application can be testing using a local testing tool. For QMENTA, this is a Python script called "test_tool.py" available from QMENTA and for Flywheel, their CLI is used with an API key available from the Flywheel platform.  
+
 To test locally, first move to the directory containing dockerfile and run it:  
-e.g. `cd qsmxt_test`  
+e.g.  
+`cd qsmxt_test`  
 `docker build -f qsm.Dockerfile . -t byrondowney/public:qsmxt_test1`  
+
 To test locally with QMENTA, move to the folder containing the local testing files, e.g.
 For CLEAR-SWI:  
-`python test_tool.py byrondowney/public:clearswi-test1 example_data analysis_output --settings CLEAR-SWI_settings.json --values clear-swi_mock_settings_values.json --tool run`
+`python test_tool.py byrondowney/public:clearswi-test1 example_data analysis_output --settings CLEAR-SWI_settings.json --values clear-swi_mock_settings_values.json --tool run`  
 For QSMxT:  
-`Python test_tool.py byrondowney/public:qsmxt_test1 example_data analysis_output --settings QSMxT_settings.json --values QSMxT_mock_settings_values.json --tool run`
+`Python test_tool.py byrondowney/public:qsmxt_test1 example_data analysis_output --settings QSMxT_settings.json --values QSMxT_mock_settings_values.json --tool run`  
+
 To test locally with Flywheel, first login to the Flywheel CLI with your API key. E.g. if your API key is "12345", run the command:  
 `fw login 12345`  
 Make sure you are in the v0 directory, e.g. neurodesk-cloud-platform-api\clearswi_test\v0
@@ -33,9 +37,7 @@ For CLEAR-SWI:
 For QSMxT:  
 `fw gear local --"qsm_iterations" 1 --magnitude=input/mag.zip --phase=input/phs.zip`  
 
-#todo  
-
-#The Generic Neurodesk Settings
+#The Neurodesk Settings
 ## Notes
 1. For the sake of generalisability, we've ignored some niche and less useful features of the cloud platforms, but some are mandatory (such as the PATH variable being needed to run an application in Flywheel)
 2. If we add more compatible cloud platforms, we may be forced to add some extra settings for them to work. We will try our best not to break any existing settings files that only use existing cloud platforms, but to use a different cloud platform, you may have to add to/change your Neurodesk settings file.
@@ -107,9 +109,12 @@ description: A short (ideally 1 sentence) description of this input. This will b
 optional: Either "true" if the application sometimes doesn't need this input or "false" if it is mandatory.
 
 #### Optional input fields
-file type: A list containing the acceptable file types for this input. Not including this field will allow any file to be used in the application, which you will need to handle.
-A list of Flywheel's file types and their associated file extensions is available here: https://github.com/scitran/core/blob/d4da9eb299db9a7c6c27bdee1032d36db7cef919/api/files.py#L245-L269.  
-As QMENTA does not seem to check file type for multiple files in a directory, the preferred option is to tag the directory within the subject in the appropriate file type through the QMENTA client (in the QMENTA client, go to session -> right click -> show files -> select file/directory -> edit metadata -> type tag and press enter, then save). The API tell QMENTA to look for a tag exactly matching the file type(s) that you specify in the Neurodesk settings file, which should also match a Flywheel file type if the application is to be used on both platforms. E.g. if you specify file type as ["dicom"], then QMENTA will be looking for the tag "dicom" which you will need to put there.
+file type: A list containing the acceptable file types for this input. Not including this field will allow any file to be used in the application, which you will need to handle.  
 
-### flywheel command
+A list of Flywheel's file types and their associated file extensions is available here: https://github.com/scitran/core/blob/d4da9eb299db9a7c6c27bdee1032d36db7cef919/api/files.py#L245-L269.  
+
+As QMENTA does not seem to check file type for multiple files in a directory, the preferred option is to tag the directory within the subject in the appropriate file type through the QMENTA client (in the QMENTA client, go to session -> right click -> show files -> select file/directory -> edit metadata -> type tag and press enter, then save).  
+The API will tell QMENTA to look for a tag exactly matching the file type(s) that you specify in the Neurodesk settings file, which should also match a Flywheel file type if the application is to be used on both platforms. E.g. if you specify file type as ["dicom"], then QMENTA will be looking for the tag "dicom" which you will need to include for the files that should be used.
+
+### flywheel command (optional)
 For Flywheel only, you can explictly provide a command to run in a bash shell. For the QSMxT and CLEARSWI examples, "python run.py" is used to run the script.
