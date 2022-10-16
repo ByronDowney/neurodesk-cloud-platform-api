@@ -26,10 +26,10 @@ def flywheel_run():
         config = json.load(config)
 
     echo_times = config["config"]["Echo Time"]
-    with ZipFile('/flywheel/v0/input/magnitude/mag_data.zip', 'r') as zipObj:
+    with ZipFile('/flywheel/v0/input/magnitude/mag.zip', 'r') as zipObj:
         zipObj.extractall('/flywheel/v0/input/magnitude/')
 
-    with ZipFile('/flywheel/v0/input/phase/phase_data.zip', 'r') as zipObj:
+    with ZipFile('/flywheel/v0/input/phase/phs.zip', 'r') as zipObj:
         zipObj.extractall('/flywheel/v0/input/phase/')
 
     print("Echo Times:  ", echo_times)
@@ -40,7 +40,6 @@ def flywheel_run():
         "/opt/QSMxT/run_0_dicomSort.py",
         "/flywheel/v0/input",  # input - this should be in the Flywheel input folder!
         "/00_dicom",
-        "--use_patient_names"
         ])
 
     ima_files = glob.glob("/00_dicom/**/*.IMA", recursive=True)
@@ -119,8 +118,7 @@ def run(context):
         "python3",
         "/opt/QSMxT/run_0_dicomSort.py",
         "/root/",
-        "/00_dicom",
-        "--use_patient_names"
+        "/00_dicom"
     ])
 
     ima_files = glob.glob("/00_dicom/**/*.IMA", recursive=True)

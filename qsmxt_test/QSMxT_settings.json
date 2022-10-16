@@ -21,7 +21,6 @@
         "title": "magnitude",
         "id": "mag",
         "mandatory": 1,
-        "file_filter": "c_magnitude[1,*]<'',[],'\\.*'>",
         "in_filter": [
             "mri_brain_data"
         ],
@@ -34,7 +33,7 @@
         "title": "phase",
         "id": "phs",
         "mandatory": 1,
-        "file_filter": "c_phase[1,*]<'',[],'\\.*'>",
+        "file_filter": "c_phase[1,*]<'',[],'\\.dcm'>",
         "in_filter": [
             "mri_brain_data"
         ],

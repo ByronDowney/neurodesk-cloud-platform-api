@@ -1,11 +1,11 @@
 {
-    "magnitude": [
+    "mag": [
         {
-            "path": "mag_data.zip"
+            "path": "mag.zip"
         }],
-    "phase": [
+    "phs": [
         {
-            "path": "phase_data.zip"
+            "path": "phs.zip"
         }
     ],
     "qsm_iterations": 1

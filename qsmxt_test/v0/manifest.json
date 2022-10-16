@@ -29,10 +29,20 @@
     "inputs": {
         "magnitude": {
             "base": "file",
+            "type": {
+                "enum": [
+                    "nifti"
+                ]
+            },
             "description": "Magnitude images"
         },
         "phase": {
             "base": "file",
+            "type": {
+                "enum": [
+                    "nifti"
+                ]
+            },
             "description": "Phase images"
         }
     },

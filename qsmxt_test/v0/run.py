@@ -22,12 +22,12 @@ def flywheel_run():
     print("run.py has started...")
 
     #takes config and input from config.json
-    with open('../qsmxt_test/v0/config.json') as config:
+    with open('config.json') as config:
         config = json.load(config)
 
     qsm_iterations = config["config"]["qsm_iterations"]
-    with ZipFile('/flywheel/v0/input/magnitude/mag.zip', 'r') as zipObj:
-        zipObj.extractall('/flywheel/v0/input/magnitude/')
+    # with ZipFile('/flywheel/v0/input/magnitude/mag.zip', 'r') as zipObj:
+    #     zipObj.extractall('/flywheel/v0/input/magnitude/')
 
     with ZipFile('/flywheel/v0/input/phase/phs.zip', 'r') as zipObj:
         zipObj.extractall('/flywheel/v0/input/phase/')
