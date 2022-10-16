@@ -37,7 +37,7 @@ For CLEAR-SWI:
 For QSMxT:  
 `fw gear local --"qsm_iterations" 1 --magnitude=input/mag.zip --phase=input/phs.zip`  
 
-#The Neurodesk Settings
+# The Neurodesk Settings
 ## Notes
 1. For the sake of generalisability, we've ignored some niche and less useful features of the cloud platforms, but some are mandatory (such as the PATH variable being needed to run an application in Flywheel)
 2. If we add more compatible cloud platforms, we may be forced to add some extra settings for them to work. We will try our best not to break any existing settings files that only use existing cloud platforms, but to use a different cloud platform, you may have to add to/change your Neurodesk settings file.
