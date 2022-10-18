@@ -1,6 +1,6 @@
 {
-    "name": "ClEAR-SWI",
-    "label": "ClEAR-SWI",
+    "name": "CLEAR-SWI",
+    "label": "CLEAR-SWI",
     "description": "Published as CLEAR-SWI. It provides magnetic resonance images with improved vein and iron contrast by weighting a combined magnitude image with a preprocessed phase image. This package has the additional capability of multi-echo SWI, intensity correction, contrast enhancement and improved phase processing. The reason for the development of this package was to solve artefacts at ultra-high field strength (7T), however, it also drastically improves the SWI quality at lower field strength.",
     "author": "Korbinian Eckstein",
     "url": "https://www.neurodesk.org/",
@@ -13,11 +13,11 @@
     "custom": {
         "gear-builder": {
             "category": "analysis",
-            "image": "byrondowney/public:clearswi-test1"
+            "image": "byrondowney/neurodesk-cloud-platform-api:CLEAR-SWI"
         }
     },
     "config": {
-        "Echo Time": {
+        "echo_time": {
             "description": "change this to the Echo Time of your sequence. For multi-echoes, set a list of TE values, else set a list with a single TE value.",
             "optional": false,
             "type": "string",
@@ -27,10 +27,20 @@
     "inputs": {
         "magnitude": {
             "base": "file",
+            "type": {
+                "enum": [
+                    "dicom"
+                ]
+            },
             "description": "Magnitude images"
         },
         "phase": {
             "base": "file",
+            "type": {
+                "enum": [
+                    "dicom"
+                ]
+            },
             "description": "Phase images"
         }
     },
