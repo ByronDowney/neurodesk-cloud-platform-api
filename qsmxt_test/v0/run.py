@@ -26,8 +26,8 @@ def flywheel_run():
         config = json.load(config)
 
     qsm_iterations = config["config"]["qsm_iterations"]
-    # with ZipFile('/flywheel/v0/input/magnitude/mag.zip', 'r') as zipObj:
-    #     zipObj.extractall('/flywheel/v0/input/magnitude/')
+    with ZipFile('/flywheel/v0/input/magnitude/mag.zip', 'r') as zipObj:
+        zipObj.extractall('/flywheel/v0/input/magnitude/')
 
     with ZipFile('/flywheel/v0/input/phase/phs.zip', 'r') as zipObj:
         zipObj.extractall('/flywheel/v0/input/phase/')
@@ -106,12 +106,12 @@ def run(context):
     context.set_progress(message=f"Analysis data: {analysis_data}")
     context.set_progress(message=f"Qmenta settings: {settings}")
 
-    context.set_progress(message='This is Byron\'s QSMxT test number 1')
+    context.set_progress(message='Running QSMxT')
 
-    file_handler_0 = context.get_files('mag')[0]
+    file_handler_0 = context.get_files('magnitude')[0]
     path_0 = file_handler_0.download(f'/root/magnitude/')
 
-    file_handler_1 = context.get_files('phs')[0]
+    file_handler_1 = context.get_files('phase')[0]
     path_1 = file_handler_1.download(f'/root/phase/')
 
     qsm_iterations = settings["qsm_iterations"]

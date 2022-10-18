@@ -12,15 +12,16 @@
         "title": "qsm_iterations",
         "id": "qsm_iterations",
         "mandatory": 1,
-        "default": "1000",
-        "min": "1",
-        "max": "2000"
+        "default": 1000,
+        "min": 1,
+        "max": 2000
     },
     {
         "type": "container",
         "title": "magnitude",
-        "id": "mag",
+        "id": "magnitude",
         "mandatory": 1,
+        "file_filter": "c_magnitude[1,*]<'', any ['dicom']>",
         "in_filter": [
             "mri_brain_data"
         ],
@@ -31,9 +32,9 @@
     {
         "type": "container",
         "title": "phase",
-        "id": "phs",
+        "id": "phase",
         "mandatory": 1,
-        "file_filter": "c_phase[1,*]<'',[],'\\.dcm'>",
+        "file_filter": "c_phase[1,*]<'', any ['dicom']>",
         "in_filter": [
             "mri_brain_data"
         ],

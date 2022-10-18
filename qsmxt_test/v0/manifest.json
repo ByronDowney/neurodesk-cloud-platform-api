@@ -13,7 +13,7 @@
     "custom": {
         "gear-builder": {
             "category": "analysis",
-            "image": "byrondowney/public:qsmxt_test1"
+            "image": "byrondowney/neurodesk-cloud-platform-api:QSMxT"
         }
     },
     "config": {
@@ -31,7 +31,7 @@
             "base": "file",
             "type": {
                 "enum": [
-                    "nifti"
+                    "dicom"
                 ]
             },
             "description": "Magnitude images"
@@ -40,7 +40,7 @@
             "base": "file",
             "type": {
                 "enum": [
-                    "nifti"
+                    "dicom"
                 ]
             },
             "description": "Phase images"

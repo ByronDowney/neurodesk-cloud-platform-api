@@ -1,9 +1,9 @@
 {
-    "mag": [
+    "magnitude": [
         {
             "path": "mag.zip"
         }],
-    "phs": [
+    "phase": [
         {
             "path": "phs.zip"
         }
