@@ -37,6 +37,9 @@ For CLEAR-SWI:
 For QSMxT:  
 `fw gear local --"qsm_iterations" 1 --magnitude=input/mag.zip --phase=input/phs.zip`  
 
+>A note about testing CLEAR-SWI:
+The clearswi.jl file is currently prepared for use in the cloud. Platforms like QMENTA and Flywheel anonymise the data stored in the cloud, so the data is referred to as subject "xxxx". To run a local test, you will need to replace the "sub-xxxx" with the subject's id e.g. "sub-12345" and then rebuild the CLEAR-SWI image.
+
 # The Neurodesk Settings
 ## Notes
 1. For the sake of generalisability, we've ignored some niche and less useful features of the cloud platforms, but some are mandatory (such as the PATH variable being needed to run an application in Flywheel)
