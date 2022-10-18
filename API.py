@@ -45,7 +45,7 @@ def generate_settings(neurodesk_settings):
                 "type": neurodesk_type,
                 "title": key,
                 "id": input_id,
-                **({"mandatory": int(not value["optional"])} if "mandatory" in value else {}),
+                **({"mandatory": int(not value["optional"])} if "optional" in value else {}),
                 **({"default": value["default"]} if "default" in value else {}),
                 **({"min": value["min"]} if "min" in value else {}),
                 **({"max": value["max"]} if "max" in value else {})
