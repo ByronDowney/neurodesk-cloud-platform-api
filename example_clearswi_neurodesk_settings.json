@@ -1,22 +1,22 @@
 {
   "platforms": ["QMENTA", "Flywheel"],
-  "name": "ClEAR-SWI",
+  "name": "CLEAR-SWI",
   "description": "Published as CLEAR-SWI. It provides magnetic resonance images with improved vein and iron contrast by weighting a combined magnitude image with a preprocessed phase image. This package has the additional capability of multi-echo SWI, intensity correction, contrast enhancement and improved phase processing. The reason for the development of this package was to solve artefacts at ultra-high field strength (7T), however, it also drastically improves the SWI quality at lower field strength.",
   "author": "Korbinian Eckstein",
   "url": "https://www.neurodesk.org/",
   "source code": "https://github.com/korbinian90/CLEARSWI.jl",
   "license": "MIT",
   "version": "1.0.0",
-  "image": "byrondowney/public:clearswi-test1",
+  "image": "byrondowney/neurodesk-cloud-platform-api:CLEAR-SWI",
   "application type": "analysis",
   "environment variables": {
     "PATH": "/opt/miniconda-latest/bin:/opt/dcm2niix-latest/bin:/opt/ants-2.3.4:/opt/fsl-6.0.4/bin:/miniconda2/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/julia-1.5.3/bin:/opt/bru2:/opt/FastSurfer"
   },
   "config": {
-    "Echo Time": {
+    "echo_time": {
       "description": "change this to the Echo Time of your sequence. For multi-echoes, set a list of TE values, else set a list with a single TE value.",
       "optional": false,
-      "type": "String",
+      "type": "string",
       "default": "[4,8,12]"
     }
   },
