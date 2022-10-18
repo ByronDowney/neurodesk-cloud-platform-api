@@ -20,20 +20,20 @@ Even without logging onto any cloud platform, the function of an application can
 To test locally, first move to the directory containing dockerfile and run it:  
 e.g.  
 `cd qsmxt_test`  
-`docker build -f qsm.Dockerfile . -t byrondowney/public:qsmxt_test1`  
+`docker build -f qsm.Dockerfile . -t byrondowney/neurodesk-cloud-platform-api:QSMxT`  
 
 To test locally with QMENTA, move to the folder containing the local testing files, e.g.
 For CLEAR-SWI:  
-`python test_tool.py byrondowney/public:clearswi-test1 example_data analysis_output --settings CLEAR-SWI_settings.json --values clear-swi_mock_settings_values.json --tool run`  
+`python test_tool.py byrondowney/neurodesk-cloud-platform-api:CLEAR-SWI example_data analysis_output --settings CLEAR-SWI_settings.json --values clear-swi_mock_settings_values.json --tool run`  
 For QSMxT:  
-`Python test_tool.py byrondowney/public:qsmxt_test1 example_data analysis_output --settings QSMxT_settings.json --values QSMxT_mock_settings_values.json --tool run`  
+`python test_tool.py byrondowney/neurodesk-cloud-platform-api:QSMxT example_data analysis_output --settings QSMxT_settings.json --values QSMxT_mock_settings_values.json --tool run`  
 
 To test locally with Flywheel, first login to the Flywheel CLI with your API key. E.g. if your API key is "12345", run the command:  
 `fw login 12345`  
 Make sure you are in the v0 directory, e.g. neurodesk-cloud-platform-api\clearswi_test\v0
 Then run the local gear test:
 For CLEAR-SWI:  
-`fw gear local --"Echo Time" "[4,8,12]" --magnitude=input/mag.zip --phase=input/phs.zip`  
+`fw gear local --"echo_time" "[4,8,12]" --magnitude=input/mag.zip --phase=input/phs.zip`  
 For QSMxT:  
 `fw gear local --"qsm_iterations" 1 --magnitude=input/mag.zip --phase=input/phs.zip`  
 
